@@ -42,7 +42,7 @@
 	
 	<script>
 	
-		window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"));
+    window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"), { lkg: true });
 		
 		viewer.setEDLEnabled(true);
 		viewer.setFOV(60);
@@ -52,7 +52,7 @@
 		
 		viewer.loadGUI(() => {
 			viewer.setLanguage('en');
-			$("#menu_scene").next().show();
+			// $("#menu_scene").next().show();
 			viewer.toggleSidebar();
 		});
 		
@@ -198,6 +198,10 @@
 						aTrees.setHighlighted(!aTrees.isHighlighted);
 					});
 					sceneSG.annotations.add(aTrees);
+					// hide all annotation
+          for (var i=0; i < sceneSG.annotations.children.length; i++) {
+            sceneSG.annotations.children[i].visible = false;
+          } 
 				}
 			}
 		});
