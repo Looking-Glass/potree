@@ -50,14 +50,6 @@
 
         viewer.setDescription('Point cloud courtesy of <a href="http://www.weiss-ag.org/" target="_blank">Weiss AG</a>. (73M points)');
 
-        viewer.loadGUI(() => {
-            viewer.setLanguage('en');
-            $("#menu_appearance").next().show();
-            $("#menu_tools").next().show();
-            $("#menu_scene").next().show();
-            viewer.toggleSidebar();
-        });
-
         // Load and add point cloud to scene
         Potree.loadPointCloud("http://5.9.65.151/mschuetz/potree/resources/pointclouds/weiss/chiller/cloud.js", "Chiller", function(e) {
             let scene = viewer.scene;
@@ -72,6 +64,7 @@
 
             scene.view.position.set(26.94, -0.72, 21.52);
             scene.view.lookAt(5.50, 6.86, 8.75);
+            viewer.lkgCamera.lookAt(new THREE.Vector3(5.50, 6.86, 8.75));
         });
     </script>
 
