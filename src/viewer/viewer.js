@@ -1697,6 +1697,15 @@ export class Viewer extends EventDispatcher {
 
         camera.near = near;
         camera.far = far;
+
+        if (this.lkg) {
+          this.lkgCamera.cameras.forEach((c) => {
+            c.near = near;
+            c.far = far;
+            c.fov = this.fov;
+            c.updateProjectionMatrix();
+          });
+        }
       } else {
         // don't change near and far in this case
       }
