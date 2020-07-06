@@ -36,6 +36,7 @@ import {PotreeRenderer} from "./PotreeRenderer.js";
 import {ProfileWindow, ProfileWindowController} from "./profile.js";
 import {Scene} from "./Scene.js";
 import {Sidebar} from "./sidebar.js";
+import {FullscreenHelper} from './fullscreen.js';
 
 export class Viewer extends EventDispatcher {
 
@@ -163,6 +164,8 @@ export class Viewer extends EventDispatcher {
         this.lkgQuiltRenderer.setQuiltTexture(this.lkgRenderTarget.texture);
 
         this.lkgCamera = new HoloPlay.Camera();
+        this.fullscreenHelper = new FullscreenHelper(this.renderer);
+        console.log('fullscreen helper')
       }
 
       if (typeof Stats !== "undefined") {

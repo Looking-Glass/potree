@@ -24,6 +24,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.7.0",
     "holoplay": "^1.0.3",
+    "holoplay-core": "0.0.8",
     "rollup": "^1.31.1",
     "three": "^0.118.1",
     "through": "~2.3.4"
