@@ -164,8 +164,7 @@ export class Viewer extends EventDispatcher {
         this.lkgQuiltRenderer.setQuiltTexture(this.lkgRenderTarget.texture);
 
         this.lkgCamera = new HoloPlay.Camera();
-        this.fullscreenHelper = new FullscreenHelper(this.renderer);
-        console.log('fullscreen helper')
+        this.fullscreenHelper = new FullscreenHelper(this, this.lkgQuiltRenderer);
       }
 
       if (typeof Stats !== "undefined") {

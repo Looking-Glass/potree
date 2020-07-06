@@ -3,8 +3,9 @@ import 'fullscreen-polyfill';
 import {getFirstDevice} from './calibration.js';
 
 export class FullscreenHelper {
-  constructor(renderer) {
+  constructor(viewer, renderer) {
     this.renderer = renderer;
+    this.viewer = viewer;
 
     this.lkgDevice = null;
     getFirstDevice().then((d) => {
@@ -12,10 +13,12 @@ export class FullscreenHelper {
 
       const startOnLkg = this.isOnLkg();
       if (startOnLkg) {
-        this.renderer.render2d = false;
+        //this.renderer.render2d = false;
+        this.viewer.lkg = true;
         this.moveWarning.style.display = 'none';
       } else {
-        this.renderer.render2d = true;
+        //this.renderer.render2d = true;
+        this.viewer.lkg = false;
         this.moveWarning.style.display = '';
       }
 
@@ -46,11 +49,13 @@ export class FullscreenHelper {
     const nowOnLkg = this.isOnLkg();
     if (nowOnLkg && !this.onLkg) {
       // just moved to lkg
-      this.renderer.render2d = false;
+      // this.renderer.render2d = false;
+      this.viewer.lkg = true;
       this.moveWarning.style.display = 'none';
     } else if (!nowOnLkg && this.onLkg) {
       // just moved OFF lkg
-      this.renderer.render2d = true;
+      // this.renderer.render2d = true;
+      this.viewer.lkg = false;
       this.moveWarning.style.display = '';
     }
     this.onLkg = nowOnLkg;
@@ -107,7 +112,7 @@ export class FullscreenHelper {
       z-index: ${Number.MAX_SAFE_INTEGER};
     `;
     window.addEventListener('click', () => {
-      this.renderer.domElement.requestFullscreen();
+      this.viewer.domElement.requestFullscreen();
     });
     return fullscreenButton;
   }
