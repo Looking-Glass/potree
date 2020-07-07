@@ -13,11 +13,9 @@ export class FullscreenHelper {
 
       const startOnLkg = this.isOnLkg();
       if (startOnLkg) {
-        //this.renderer.render2d = false;
         this.viewer.lkg = true;
         this.moveWarning.style.display = 'none';
       } else {
-        //this.renderer.render2d = true;
         this.viewer.lkg = false;
         this.moveWarning.style.display = '';
       }
@@ -49,13 +47,13 @@ export class FullscreenHelper {
     const nowOnLkg = this.isOnLkg();
     if (nowOnLkg && !this.onLkg) {
       // just moved to lkg
-      // this.renderer.render2d = false;
       this.viewer.lkg = true;
       this.moveWarning.style.display = 'none';
     } else if (!nowOnLkg && this.onLkg) {
       // just moved OFF lkg
-      // this.renderer.render2d = true;
       this.viewer.lkg = false;
+      this.renderer.domElement.style.top = this.renderer.domElement.style.left =
+          '0px';
       this.moveWarning.style.display = '';
     }
     this.onLkg = nowOnLkg;
@@ -111,9 +109,8 @@ export class FullscreenHelper {
       position: absolute;
       z-index: ${Number.MAX_SAFE_INTEGER};
     `;
-    window.addEventListener('click', () => {
-      this.viewer.domElement.requestFullscreen();
-    });
+    window.addEventListener(
+        'click', () => { this.renderer.domElement.requestFullscreen(); });
     return fullscreenButton;
   }
 }
