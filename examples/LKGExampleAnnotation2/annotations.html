@@ -44,7 +44,7 @@
     <script>
         const messageBus = new MessageBus();
 
-        window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"));
+window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"), {isUI: true});
 
         viewer.setEDLEnabled(true);
         viewer.setFOV(60);
@@ -237,6 +237,33 @@
                     }
                 }]
             });
+        });
+        // sync views
+        viewer.renderer.domElement.addEventListener('mouseup', (e) => { 
+          syncCameras();
+        })
+        viewer.renderer.domElement.addEventListener('mousewheel', (e) => { 
+          syncCameras();
+        })
+        viewer.renderer.domElement.addEventListener('DOMMouseScroll', (e) => { 
+          syncCameras();
+        })
+        viewer.renderer.domElement.addEventListener('dblclick', (e) => { 
+          syncCameras();
+        })
+        function syncCameras() {
+          let position = sceneSG.getActiveCamera().position;
+          let target = sceneSG.view.getPivot();
+          messageBus.postMessage('camera', {pos: position, lookAt: target});
+        }
+        // sidebar slider change
+        viewer.addEventListener('point_budget_changed', (e) => {
+          let val = viewer.getPointBudget();
+          messageBus.postMessage('pointBudget', val);
+        });
+        this.viewer.addEventListener('fov_changed', (e) => {
+          let val = viewer.getFOV();
+          messageBus.postMessage('fov', val);
         });
     </script>
 
