@@ -238,7 +238,7 @@ window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"),
                 }]
             });
         });
-        // sync views
+        // sync views when you change orbit controls
         viewer.renderer.domElement.addEventListener('mouseup', (e) => { 
           syncCameras();
         })
@@ -256,7 +256,7 @@ window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"),
           let target = sceneSG.view.getPivot();
           messageBus.postMessage('camera', {pos: position, lookAt: target});
         }
-        // sidebar slider change
+        // sidebar slider change. Only added for the first 2 sliders, but you can add more
         viewer.addEventListener('point_budget_changed', (e) => {
           let val = viewer.getPointBudget();
           messageBus.postMessage('pointBudget', val);
