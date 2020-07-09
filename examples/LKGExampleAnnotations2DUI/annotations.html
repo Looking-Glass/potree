@@ -95,7 +95,7 @@ window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"),
                         event.stopPropagation();
                         viewer.setScene(sceneLion);
                     });
-                    elTitle.toString = () => "About Annotations";
+                    elTitle.toString = () => "Annotation Zoom";
                     elTitle.click(() => {
                         messageBus.postMessage('focus', 0)
                     })
