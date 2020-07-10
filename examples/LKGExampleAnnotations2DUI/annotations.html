@@ -127,6 +127,9 @@ window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"),
 						<code>viewer.scene.view.getPivot()</code><br>
 						`
                     });
+                    aAbout2.elTitle.click(() => {
+                        messageBus.postMessage('focus', 1)
+                    })
                     sceneSG.annotations.add(aAbout2);
                 }
 

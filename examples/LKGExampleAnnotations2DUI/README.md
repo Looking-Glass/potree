@@ -1,15 +1,16 @@
 README
 --
 
-
-## Overview 
-
 This is an example demostrating communication between 2D UI window and a 3D window inside the Looking Glass.  
+
+## Overview
+
 The example does the following:
+
 - Communicates between 2 windows using our `messagebus.js`  
-- When change the values on the first 2 sliders on sidebar (point budget, FOV), the values are synced across both windows
+- When changing the values on the first 2 sliders on sidebar (point budget, FOV), the values are synced across both windows
 - When clicked on annotation "Annotation Zoom", both windows zoom to a specific location  
-- When use orbit controls to pan/zoom/focus on 2D window, the camera in 3D window is synced
+- When using orbit controls to pan/zoom/focus on 2D window, the camera in 3D window is synced
 
 
 ## Code Snippets
