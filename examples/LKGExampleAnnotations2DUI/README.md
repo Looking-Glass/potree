@@ -13,7 +13,7 @@ The example does the following:
 - When using orbit controls to pan/zoom/focus on 2D window, the camera in 3D window is synced
 
 
-## Code Snippets
+## Code Example
 
 First, include the script and define `messageBug` in both windows, like so:
 ```
@@ -37,4 +37,25 @@ messageBus.addEventListener('fov', (e) => {
 });
 ```
 
+## Details
+
+1. Syncing sidebar slider values
+
+We use event listeners to catch the events fired when user drag the sliders. In the example, we only added for the first 2 sliders, but others are also doable by adding more event listeners. The events can be found in `src/viewer/sidebar.js`. 
+```
+viewer.addEventListener('point_budget_changed', (e) => {
+  let val = viewer.getPointBudget();
+  messageBus.postMessage('pointBudget', val);
+});
+```
+
+2. Syncing annotaion zooms
+Clicking on annotations only result in zoom to a pre-defined, specific location when the contructor of the annotaion contains `cameraPosition` and `cameraTarget`. 
+We add a customized `click` function on `elTitle` to post message to the 3D scene.
+```
+// aAbout2 is one of the annotation objects
+aAbout2.elTitle.click(() => {
+  messageBus.postMessage('focus', 1)
+})
+```
 
