@@ -237,16 +237,15 @@
 
         const messageBus = new MessageBus();
         messageBus.addEventListener('focus', (e) => {
-            console.log("annotation clicked");
-            let n = e.detail
+            let n = e.detail;
             sceneSG.annotations.children[n].clickTitle();
             viewer.lkgCamera.lookAt(sceneSG.annotations.children[n].cameraTarget);
         });
         messageBus.addEventListener('camera', (e) => {
-          let pos = e.detail.pos
-          let target = e.detail.lookAt
-          sceneSG.view.position.set(pos.x, pos.y, pos.z)
-          sceneSG.view.lookAt(target.x, target.y, target.z)
+          let pos = e.detail.pos;
+          let target = e.detail.lookAt;
+          sceneSG.view.position.set(pos.x, pos.y, pos.z);
+          sceneSG.view.lookAt(target.x, target.y, target.z);
         });
         messageBus.addEventListener('pointBudget', (e) => {
           viewer.setPointBudget(e.detail);

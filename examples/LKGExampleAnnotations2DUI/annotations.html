@@ -44,7 +44,7 @@
     <script>
         const messageBus = new MessageBus();
 
-window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"), {isUI: true});
+window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"));
 
         viewer.setEDLEnabled(true);
         viewer.setFOV(60);
@@ -128,7 +128,7 @@ window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"),
 						`
                     });
                     aAbout2.elTitle.click(() => {
-                        messageBus.postMessage('focus', 1)
+                        messageBus.postMessage('focus', 1);
                     })
                     sceneSG.annotations.add(aAbout2);
                 }
