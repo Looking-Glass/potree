@@ -15,7 +15,7 @@ The example does the following:
 
 ## Code Example
 
-First, include the script and define `messageBug` in both windows, like so:
+First, include the script and define `messageBus` in both windows, like so:
 ```
 
 <script src="messagebus.js"></script>
