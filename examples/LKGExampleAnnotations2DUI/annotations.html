@@ -44,7 +44,7 @@
     <script>
         const messageBus = new MessageBus();
 
-window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"));
+        window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"));
 
         viewer.setEDLEnabled(true);
         viewer.setFOV(60);
@@ -241,31 +241,35 @@ window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"))
             });
         });
         // sync views when you change orbit controls
-        viewer.renderer.domElement.addEventListener('mouseup', (e) => { 
-          syncCameras();
+        viewer.renderer.domElement.addEventListener('mouseup', (e) => {
+            syncCameras();
         })
-        viewer.renderer.domElement.addEventListener('mousewheel', (e) => { 
-          syncCameras();
+        viewer.renderer.domElement.addEventListener('mousewheel', (e) => {
+            syncCameras();
         })
-        viewer.renderer.domElement.addEventListener('DOMMouseScroll', (e) => { 
-          syncCameras();
+        viewer.renderer.domElement.addEventListener('DOMMouseScroll', (e) => {
+            syncCameras();
         })
-        viewer.renderer.domElement.addEventListener('dblclick', (e) => { 
-          syncCameras();
+        viewer.renderer.domElement.addEventListener('dblclick', (e) => {
+            syncCameras();
         })
+
         function syncCameras() {
-          let position = sceneSG.getActiveCamera().position;
-          let target = sceneSG.view.getPivot();
-          messageBus.postMessage('camera', {pos: position, lookAt: target});
+            let position = sceneSG.getActiveCamera().position;
+            let target = sceneSG.view.getPivot();
+            messageBus.postMessage('camera', {
+                pos: position,
+                lookAt: target
+            });
         }
         // sidebar slider change. Only added for the first 2 sliders, but you can add more
         viewer.addEventListener('point_budget_changed', (e) => {
-          let val = viewer.getPointBudget();
-          messageBus.postMessage('pointBudget', val);
+            let val = viewer.getPointBudget();
+            messageBus.postMessage('pointBudget', val);
         });
         this.viewer.addEventListener('fov_changed', (e) => {
-          let val = viewer.getFOV();
-          messageBus.postMessage('fov', val);
+            let val = viewer.getFOV();
+            messageBus.postMessage('fov', val);
         });
     </script>
 
