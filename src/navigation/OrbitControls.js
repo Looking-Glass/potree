@@ -209,7 +209,10 @@ export class OrbitControls extends EventDispatcher {
       });
 
       tween.onComplete(
-          () => { this.tweens = this.tweens.filter(e => e !== tween); });
+          () => { 
+            this.tweens = this.tweens.filter(e => e !== tween); 
+            this.dispatchEvent({type : 'zoomOver'});
+      });
 
       if (this.viewer.lkg) {
         this.viewer.lkgCamera.lookAt(I.location);

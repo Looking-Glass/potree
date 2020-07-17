@@ -250,7 +250,7 @@
         viewer.renderer.domElement.addEventListener('DOMMouseScroll', (e) => {
             syncCameras();
         })
-        viewer.renderer.domElement.addEventListener('dblclick', (e) => {
+        viewer.controls.addEventListener("zoomOver", (e) => {
             syncCameras();
         })
 
@@ -267,7 +267,7 @@
             let val = viewer.getPointBudget();
             messageBus.postMessage('pointBudget', val);
         });
-        this.viewer.addEventListener('fov_changed', (e) => {
+        viewer.addEventListener('fov_changed', (e) => {
             let val = viewer.getFOV();
             messageBus.postMessage('fov', val);
         });
