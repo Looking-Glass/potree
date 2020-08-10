@@ -1,4 +1,9 @@
 import * as HoloPlay from '../../node_modules/holoplay/dist/holoplay.module.js';
+import CameraRig from '../../tiled8k-electron/camerarig.js';
+import {
+  MOSAIC_FRAGMENT_SHADER,
+  MOSAIC_VERTEX_SHADER
+} from '../../tiled8k-electron/mosaicshaders.js';
 import {
   CameraMode,
   ClipMethod,
@@ -166,6 +171,53 @@ export class Viewer extends EventDispatcher {
         this.lkgCamera = new HoloPlay.Camera();
         this.fullscreenHelper =
             new FullscreenHelper(this, this.lkgQuiltRenderer);
+      }
+
+      this.t8k = args.t8k;
+      if (this.t8k) {
+        const queryParams = new URLSearchParams(location.search);
+        const calibrationB64 = queryParams.get('calibration');
+        const calibrationString = atob(calibrationB64);
+        this.calibration = JSON.parse(calibrationString);
+        this.gridSize = this.calibration.grid.x * this.calibration.grid.y;
+
+        this.quiltResolution = 8192;
+        this.quiltTileCount = new THREE.Vector2(7, 7);
+        this.quiltRenderTarget = new THREE.WebGLRenderTarget(
+            this.quiltResolution, this.quiltResolution,
+            {format : THREE.RGBFormat});
+        this.renderSize = new THREE.Vector2(7680, 4320);
+
+        this.renderScene = new THREE.Scene();
+        this.renderCamera =
+            new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5, 0);
+        this.renderQuad = new THREE.Mesh(
+            new THREE.PlaneBufferGeometry(1, 1), new THREE.ShaderMaterial({
+              uniforms : {
+                quilt : {value : this.quiltRenderTarget.texture},
+                cal : {value : new THREE.Vector3()},
+                subp : {value : 1 / (this.renderSize.x * 3)},
+                tileCount : {value : this.quiltTileCount.clone()},
+                quiltViewPortion : {
+                  value : new THREE.Vector2((Math.floor(this.quiltResolution /
+                                                        this.quiltTileCount.x) *
+                                             this.quiltTileCount.x) /
+                                                this.quiltResolution,
+                                            (Math.floor(this.quiltResolution /
+                                                        this.quiltTileCount.y) *
+                                             this.quiltTileCount.y) /
+                                                this.quiltResolution)
+                },
+                bShowQuilts : {value : false},
+                bShouldAngularFilter : {value : true},
+              },
+              vertexShader : MOSAIC_VERTEX_SHADER,
+              fragmentShader : MOSAIC_FRAGMENT_SHADER,
+            }));
+        this.renderScene.add(this.renderQuad);
+
+        this.cameraRig = new CameraRig(this.quiltResolution,
+                                       this.quiltTileCount, this.gridSize);
       }
 
       if (typeof Stats !== "undefined") {
@@ -1840,7 +1892,7 @@ export class Viewer extends EventDispatcher {
     }
   }
 
-  render() {
+  render(screenshot, screenshotIndex) {
     if (Potree.measureTimings)
       performance.mark("render-start");
 
@@ -1875,7 +1927,56 @@ export class Viewer extends EventDispatcher {
       const vr = this.vr;
       const vrActive = (vr && vr.display.isPresenting);
 
-      if (this.lkg) {
+      if (this.t8k && screenshot) {
+        pRenderer.clear();
+
+        const camera = this.scene.getActiveCamera();
+        this.cameraRig.near = camera.near;
+        this.cameraRig.far = camera.far;
+        this.cameraRig.position.copy(camera.position);
+        this.cameraRig.rotation.copy(camera.rotation);
+        this.cameraRig.matrixWorld.copy(camera.matrixWorld);
+        this.cameraRig.lookAt(this.scene.view.getPivot());
+        this.cameraRig.update();
+
+        const uniformName =
+            screenshotIndex == 0
+                ? 'x'
+                : screenshotIndex == 1 ? 'y' : screenshotIndex == 2 ? 'z' : 'w';
+        const uniformOrder = this.calibration.order[uniformName];
+        const uniformComponent =
+            uniformOrder == 0
+                ? 'x'
+                : uniformOrder == 1 ? 'y' : uniformOrder == 2 ? 'z' : 'w';
+
+        const arrayCamera = this.cameraRig.devices[screenshotIndex].arrayCamera;
+
+        this.renderer.setRenderTarget(null);
+        this.renderer.setSize(1, 1, false);
+        for (let j = 0; j < 2; j++) {
+          arrayCamera.cameras.forEach((subcamera) => {
+            const viewport = subcamera.viewport.toArray();
+            this.renderer.setViewport(...viewport);
+            pRenderer.render({camera : subcamera, viewport});
+          });
+        }
+
+        this.renderer.setRenderTarget(this.quiltRenderTarget);
+        arrayCamera.cameras.forEach((subcamera) => {
+          const viewport = subcamera.viewport.toArray();
+          this.renderer.setViewport(...viewport);
+          pRenderer.render({camera : subcamera, viewport});
+        });
+
+        this.renderer.setRenderTarget(null);
+        this.renderer.setSize(this.renderSize.x, this.renderSize.y);
+
+        this.renderQuad.material.uniforms.cal.value.set(
+            this.calibration.pitch[uniformComponent],
+            this.calibration.slope[uniformComponent],
+            this.calibration.center[uniformComponent]);
+        this.renderer.render(this.renderScene, this.renderCamera);
+      } else if (this.lkg) {
         this.lkgRenderTarget.setSize(this.lkgQuiltResolution,
                                      this.lkgQuiltResolution);
 

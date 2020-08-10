@@ -1,34 +1,49 @@
 {
-  "name": "potree",
-  "private": true,
-  "version": "1.7.0",
-  "description": "WebGL point cloud viewer",
-  "keywords": [
-    "point",
-    "cloud",
-    "pointcloud",
-    "octree",
-    "entwine",
-    "viewer",
-    "threejs",
-    "webgl",
-    "browser",
-    "tool"
-  ],
-  "scripts": {
-    "start": "gulp watch",
-    "build": "gulp build pack"
-  },
-  "dependencies": {
-    "gulp": "^4.0.2",
-    "gulp-concat": "^2.6.1",
-    "gulp-connect": "^5.7.0",
-    "holoplay": "^1.0.3",
-    "holoplay-core": "0.0.8",
-    "rollup": "^1.31.1",
-    "three": "^0.118.1",
-    "through": "~2.3.4"
-  },
-  "author": "Markus Schütz",
-  "license": "BSD-2-CLAUSE"
+    "name": "potree",
+    "private": true,
+    "version": "1.7.0",
+    "description": "WebGL point cloud viewer",
+    "keywords": [
+        "point",
+        "cloud",
+        "pointcloud",
+        "octree",
+        "entwine",
+        "viewer",
+        "threejs",
+        "webgl",
+        "browser",
+        "tool"
+    ],
+    "scripts": {
+        "start": "gulp watch",
+        "build": "gulp build pack",
+        "start-electron": "electron ."
+    },
+    "build": {
+        "appId": "LookingGlassFactory.potree",
+        "productName": "potree",
+        "win": {
+            "target": "msi"
+        }
+    },
+    "dependencies": {
+        "electron-squirrel-startup": "^1.0.0",
+        "gulp": "^4.0.2",
+        "gulp-concat": "^2.6.1",
+        "gulp-connect": "^5.7.0",
+        "holoplay": "^1.0.3",
+        "holoplay-core": "0.0.8",
+        "rollup": "^1.31.1",
+        "three": "^0.118.1",
+        "through": "~2.3.4"
+    },
+    "author": "Looking Glass Factory",
+    "license": "BSD-2-CLAUSE",
+    "devDependencies": {
+        "electron": "^9.1.1",
+        "electron-builder": "^22.8.0",
+        "electron-winstaller": "^4.0.1"
+    },
+    "main": "tiled8k-electron/main.js"
 }

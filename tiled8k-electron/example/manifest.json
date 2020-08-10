@@ -1,0 +1,18 @@
+{
+    "pointCloud": "../pointclouds/vol_total/cloud.js",
+    "annotations": [{
+            "position": [0, 0, 0],
+            "title": "point cloud",
+            "description": "annotation description",
+            "cameraPosition": [-14, 14, 14],
+            "cameraTarget": [0, 0, 0]
+        },
+        {
+            "position": [0, 10, 0],
+            "title": "another annotation",
+            "description": "something",
+            "cameraPosition": [0, 20, 20],
+            "cameraTarget": [0, 0, 0]
+        }
+    ]
+}
