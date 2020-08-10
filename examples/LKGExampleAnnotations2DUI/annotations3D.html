@@ -246,6 +246,7 @@
             let target = e.detail.lookAt;
             sceneSG.view.position.set(pos.x, pos.y, pos.z);
             sceneSG.view.lookAt(target.x, target.y, target.z);
+            viewer.lkgCamera.lookAt(target);
         });
         messageBus.addEventListener('pointBudget', (e) => {
             viewer.setPointBudget(e.detail);
